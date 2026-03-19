@@ -9,13 +9,15 @@ RUN mvn dependency:go-offline
 COPY . .
 RUN mvn clean package -DskipTests
 
-# -------- Stage 2: Run --------
-FROM eclipse-temurin:17-jre-alpine
+# -------- Stage 2: Run (Tomcat) --------
+FROM tomcat:9.0-jdk17-temurin
 
-WORKDIR /app
+# Remove default apps (optional but clean)
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-COPY --from=builder /app/target/*.jar app.jar
+# Copy WAR file
+COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["catalina.sh", "run"]
