@@ -1,15 +1,21 @@
-# Use official Tomcat base image
-FROM tomcat:9.0
+# -------- Stage 1: Build --------
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
-# Remove default ROOT application
-RUN rm -rf /usr/local/tomcat/webapps/ROOT
+WORKDIR /app
 
-# Copy your WAR file into webapps as ROOT
-COPY target/myapp.war /usr/local/tomcat/webapps/ROOT.war
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Expose port 8080 inside container
+COPY . .
+RUN mvn clean package -DskipTests
+
+# -------- Stage 2: Run --------
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# ✅ Start Tomcat using full path
-CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
-
+ENTRYPOINT ["java", "-jar", "app.jar"]
