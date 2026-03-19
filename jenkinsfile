@@ -18,7 +18,7 @@ pipeline{
         }
         stage('pushing image to docker hub'){
             steps{
-                sh 'docker push subhashrokkala/hotsar:latest'
+                sh 'docker push subhashrokkala/hotstar:latest'
             }
         }
     }
