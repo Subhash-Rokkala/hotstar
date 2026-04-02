@@ -6,7 +6,6 @@
     <groupId>OTT</groupId>
     <artifactId>Hotstar</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0-SNAPSHOT</version>
     <version>v1</version>
     <name>Hotstar</name>
     <url>http://maven.apache.org</url>
