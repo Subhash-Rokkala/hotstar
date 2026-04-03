@@ -1,4 +1,4 @@
-pipeline 
+pipeline {
     agent any
 
     tools {
@@ -61,7 +61,7 @@ pipeline
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                     docker push subhashrokkala/hotstar:${BUILD_NUMBER}
-                    docker push subhashrokkala/hotstar:latest
+                    docker push ubhashrokkala/hotstar:latest
                     docker logout
                     '''
                 }
